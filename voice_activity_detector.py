@@ -1,5 +1,6 @@
 import librosa
 import numpy as np
+import noisereduce as nr
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -7,21 +8,20 @@ from sklearn.metrics import accuracy_score
 
 def extract_features(audio_path):
     y, sr = librosa.load(audio_path, res_type="kaiser_fast")
-    mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
-    spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr)
-    chroma = librosa.feature.chroma_stft(y=y, sr=sr)
-
+    y_denoised = nr.reduce_noise(y=y, sr=sr)
+    mfccs = librosa.feature.mfcc(y=y_denoised, sr=sr, n_mfcc=13)
+    spectral_centroid = librosa.feature.spectral_centroid(y=y_denoised, sr=sr)
+    chroma = librosa.feature.chroma_stft(y=y_denoised, sr=sr)
     features = np.hstack(
-        [
+        (
             np.mean(mfccs, axis=1),
             np.std(mfccs, axis=1),
             np.mean(spectral_centroid),
             np.std(spectral_centroid),
             np.mean(chroma, axis=1),
             np.std(chroma, axis=1),
-        ]
+        )
     )
-
     return features
 
 
