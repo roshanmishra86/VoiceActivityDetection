@@ -6,7 +6,6 @@ import os
 import json
 from datetime import datetime
 from pydantic import BaseModel
-from voice_activity_detector import detect_human_voice
 import joblib
 
 
