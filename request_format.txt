@@ -1,0 +1,17 @@
+curl -X POST \
+  http://localhost:5000/train \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN_HERE' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'files=@/path/to/audio1.mp3' \
+  -F 'files=@/path/to/audio2.wav' \
+  -F 'files=@/path/to/audio3.mp3' \
+  -F 'labels=0' \
+  -F 'labels=1' \
+  -F 'labels=2'
+
+
+curl -X POST \
+  http://localhost:5000/upload-audio \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN_HERE' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'files=@/path/to/audio1.mp3' \
